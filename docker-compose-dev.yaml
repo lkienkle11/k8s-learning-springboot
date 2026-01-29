@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  postgres-db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - k8s_learn_nw
+
+  service-book:
+    build:
+      context: .
+      dockerfile: service_book/Dockerfile
+    image: service_book:v1
+    container_name: service-book
+    depends_on:
+      - postgres-db
+    networks:
+      - k8s_learn_nw
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./service_book/.env
+
+  service-user:
+    build:
+      context: .
+      dockerfile: service_user/Dockerfile
+    image: service_user:v1
+    container_name: service-user
+    depends_on:
+      - postgres-db
+      - service-book
+    networks:
+      - k8s_learn_nw
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./service_user/.env
+#
+  service-product:
+    build:
+      context: .
+      dockerfile: service_product/Dockerfile
+    image: service_product:v1
+    container_name: service-product
+    depends_on:
+      - postgres-db
+      - service-book
+    networks:
+      - k8s_learn_nw
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./service_product/.env
+
+networks:
+  k8s_learn_nw:
+    driver: bridge

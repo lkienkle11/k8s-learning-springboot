@@ -1,0 +1,2 @@
+rootProject.name = 'service_user'
+includeBuild '../common-object'

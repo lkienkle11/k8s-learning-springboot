@@ -1,0 +1,2 @@
+rootProject.name = 'service_product'
+includeBuild '../common-object'
