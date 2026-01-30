@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-book-deploy
+  labels:
+    app: service-book-deploy
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-book-app
+      tier: backend
+  template:
+    metadata:
+      name: service-book-app
+      labels:
+        app: service-book-app
+        tier: backend
+    spec:
+      containers:
+        - name: service-book
+          image: fnmain1234/service_book:v1
+          ports:
+            - containerPort: 8002
+          envFrom:
+            - secretRef:
+                name: service-common

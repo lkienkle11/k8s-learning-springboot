@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-user-deploy
+  labels:
+    app: service-user-deploy
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-user-app
+      tier: backend
+  template:
+    metadata:
+      name: service-user-app
+      labels:
+        app: service-user-app
+        tier: backend
+    spec:
+      containers:
+        - name: service-user
+          image: fnmain1234/service_user:v1
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: service-common
