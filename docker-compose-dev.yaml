@@ -28,6 +28,12 @@ services:
     env_file:
       - ./env/.env.dev
       - ./service_book/.env
+    environment:
+      - DB_HOSTNAME
+      - DB_PORT
+      - DB_SAMPLE
+      - DB_USERNAME
+      - DB_PASSWORD
 
   service-user:
     build:
@@ -45,6 +51,12 @@ services:
     env_file:
       - ./env/.env.dev
       - ./service_user/.env
+    environment:
+      - DB_HOSTNAME
+      - DB_PORT
+      - DB_SAMPLE
+      - DB_USERNAME
+      - DB_PASSWORD
 #
   service-product:
     build:
@@ -62,6 +74,12 @@ services:
     env_file:
       - ./env/.env.dev
       - ./service_product/.env
+    environment:
+      - DB_HOSTNAME
+      - DB_PORT
+      - DB_SAMPLE
+      - DB_USERNAME
+      - DB_PASSWORD
 
 networks:
   k8s_learn_nw:
