@@ -3,6 +3,8 @@ spring:
     name: service_book
   config:
     import:
+      - optional:file:./env/.env.dev[.properties]
+      - optional:file:../env/.env.dev[.properties]
       - optional:file:./service_user/.env[.properties]
       - optional:file:./.env[.properties]
       - optional:file:.env[.properties]
