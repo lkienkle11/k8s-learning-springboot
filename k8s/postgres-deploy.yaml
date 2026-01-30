@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: postgres-deploy
+  labels:
+    app: postgres-deploy
+    tier: db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: postgres-app
+      labels:
+        app: postgres-app
+        tier: db
+    spec:
+      containers:
+        - name: postgres-db
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            # 1. Map biến POSTGRES_USER từ key DB_USER
+            - name: POSTGRES_USER       # Tên biến trong Container
+              valueFrom:
+                secretKeyRef:
+                  name: service-common    # Tên secret (trong kustomization)
+                  key: DB_USERNAME          # Tên key trong file .env
+
+            # 2. Map biến POSTGRES_PASSWORD từ key DB_PASSWORD
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: service-common
+                  key: DB_PASSWORD
+
+            # 3. Giá trị tĩnh (Hard-code) thì dùng 'value' bình thường
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: "trust"
+  selector:
+    matchLabels:
+      app: postgres-app
+      tier: db

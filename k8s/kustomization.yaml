@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+secretGenerator:
+  - name: service-common
+    envs:
+      - .env.dev
+    type: Opaque
+
+resources:
+  - postgres-deploy.yaml
+  - service-book-deploy.yaml
+  - service-product-deploy.yaml
+  - service-user-deploy.yaml
+  - postgres-service.yaml
+  - service-book-service.yaml
+  - service-user-service.yaml
+  - service-product-service.yaml
